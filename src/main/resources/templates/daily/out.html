@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>@Drimansy - Salidas</title>
+<script type="text/javascript" src="/js/out.js"></script>
+</head>
+<body>
+	<div class="main-container">
+		<div class="container-btn-bottom">
+			<div th:if="${isArrive>0}" id="addInvoice" class="btns btn2" 
+				style="margin-right: 20px; display: none;">
+				<span>Agregar factura</span>
+			</div>
+			<div id="save" class="btns btn1"><span>Guardar</span></div>
+		</div>
+		<div class="master-container">
+			<input id="id" type="hidden"
+				th:value="${dailyOut.id==null?0:dailyOut.id}" />
+			<input id="createdBy" type="hidden"
+				th:value="${dailyOut.createdBy==null?0:dailyOut.createdBy.id}" />	
+			<input id="totalOut" type="hidden"
+				th:value="${dailyOut.totalOut==null?0:dailyOut.totalOut}" /> 
+			<input id="arriveTotal" type="hidden"
+				th:value="${dailyOut.arriveTotal==null?0:dailyOut.arriveTotal}" />
+			<input id="isArrive" type="hidden" th:value="${isArrive}" />
+			<input id="arriveDateOld" type="hidden" th:value="${dailyOut.arriveDateStr}" />
+			<div class="display-row">
+				<div class="flex-center">
+					<label for="dailyDate">Fecha</label>:<input id="dailyDate"
+						type="date" th:value="${dailyOut.dateStr}" required="required" />
+				</div>
+				<div class="flex-center">
+					<label for="carId">Carro</label>: <select id="carId"
+						required="required" th:field="*{dailyOut.car.id}">
+						<option value="">--</option>
+						<option th:each="car : ${cars}" th:value="${car.id}"
+							th:utext="${car.plate}" />
+					</select>
+				</div>
+				<div class="flex-center">
+					<label for="responsibleId">Responsable</label>: <select
+						required="required" id="responsibleId" 
+						th:field="*{dailyOut.responsible.id}">
+						<option value="">--</option>
+						<option th:each="coll : ${collaborators}" th:value="${coll.id}"
+							th:utext="${coll.name}" />
+					</select>
+				</div>
+			</div>
+			<div class="display-row">
+				<div class="flex-center">
+					<label for="dateOut">Hora salida</label>:<input id="dateOut"
+						th:value="${dailyOut.dateOutStr}" type="datetime-local"
+						required="required" />
+				</div>
+				<div class="flex-center">
+					<label>Hora llegada</label>: 
+					<input th:if="${isArrive>0}" id="arriveDate" required="required" 
+						th:value="${dailyOut.arriveDateStr}" type="datetime-local"/>
+					<input th:if="${isArrive<=0}" id="arriveDate" th:value="${dailyOut.arriveDateStr}" 
+						type="datetime-local"/>
+				</div>
+			</div>
+		</div>
+
+		<div class="detail-container">
+			<div class="detail-header">
+				<div>
+					<span>Total salida:</span> $<span id="totalOutSpan"
+						style="font-weight: bold;">0</span>
+				</div>
+				<div>
+					<span>Total devuelto:</span> $<span id="arriveTotalSpan"
+						style="font-weight: bold;">0</span>
+				</div>
+				<div>
+					<span>Total:</span> $<span id="totalSpan"
+						style="font-weight: bold;">0</span>
+				</div>
+			</div>
+			<div class="result-table">
+				<div class="header-row">
+					<div class="header-column" style="width: 40%">
+						<span>Producto</span>
+					</div>
+					<div class="header-column" style="width: 20%">
+						<span>Cantidad salida</span>
+					</div>
+					<div class="header-column" style="width: 20%">
+						<span>Cantidad devuelta</span>
+					</div>
+					<div class="header-column" style="width: 20%">
+						<span>Precio</span>
+					</div>
+				</div>
+				<div th:if="${!dailyOut.details.isEmpty()}" class="container-rows">
+					<div th:each="detail : ${dailyOut.details}" th:id="${detail.id}"
+						th:data-product="${detail.product.id}"
+						class="body-row product-item">
+						<div class="body-column" style="width: 40%">
+							<span th:text="${detail.product.sequence}"></span> <span>&nbsp;-&nbsp;</span>
+							<span th:text="${detail.product.name}"></span>
+						</div>
+						<div class="body-column" style="width: 20%">
+							<input type="number" class="d-out"
+								th:value="${detail.amountOut==null?0:detail.amountOut}" min="0"
+								step="1">
+						</div>
+						<div class="body-column" style="width: 20%">
+							<input type="number" class="d-in"
+								th:value="${detail.amountIn==null?0:detail.amountIn}" min="0"
+								step="1">
+						</div>
+						<div class="body-column" style="width: 20%">
+							$&nbsp;<span class="d-price" th:text="${detail.product.price}"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

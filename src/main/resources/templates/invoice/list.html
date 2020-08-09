@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>@Drimansy - Facturas</title>
+<script type="text/javascript" src="/js/invoices.js"></script>
+</head>
+<body>
+	<div class="main-container">
+		<div class="container-btn-bottom">
+			<div id="newInvoice" class="btns btn1">
+				<span>Nueva factura</span>
+			</div>
+		</div>
+		<div th:if="${invoices.isEmpty()}" class="container-empty">
+			<div>
+				<span class="icon-sad empty-rows"></span>
+			</div>
+			<div>
+				<span class="tx-big-warning">No se encontraron registros</span>
+			</div>
+		</div>
+		<div th:if="${!invoices.isEmpty()}" class="searcher-result">
+			<div class="result-table">
+				<div class="header-row">
+					<div class="header-column" style="width: 15%">
+						<span>Fecha</span>
+					</div>
+					<div class="header-column" style="width: 25%">
+						<span>Responsable</span>
+					</div>
+					<div class="header-column" style="width: 25%">
+						<span>Cliente</span>
+					</div>
+					<div class="header-column" style="width: 15%">
+						<span>Valor</span>
+					</div>
+					<div class="header-column" style="width: 15%">
+						<span>Abonado</span>
+					</div>
+					<div class="header-column" style="width: 5%">
+						<span>&nbsp;</span>
+					</div>
+				</div>
+				<div class="container-rows">
+					<div th:each="invoice : ${invoices}" th:id="${invoice.id}"
+						class="body-row invoice-item">
+						<div class="body-column" style="width: 15%">
+							<a href="#" class="go-to" title="Ir a editar">
+								<span th:text="${invoice.dateStr}"></span>
+							</a>
+						</div>
+						<div class="body-column" style="width: 25%">
+							<span th:text="${invoice.responsible.name}"></span>
+						</div>
+						<div class="body-column" style="width: 25%">
+							<span th:text="${invoice.client.name}"></span>
+						</div>
+						<div class="body-column" style="width: 15%">
+							<span th:text="${invoice.total}"></span>
+						</div>
+						<div class="body-column" style="width: 15%">
+							<span >0</span>
+						</div>
+						<div class="body-column" style="width: 5%; justify-content: center;">
+							<span class="icon-circle-money icon-row-action" title="Abonos"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

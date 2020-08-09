@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>@Drimansy-Menú</title>
+<script type="text/javascript" src="/js/jquery/jquery.3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/home.js"></script>
+<script type="text/javascript" src="/js/utils.js"></script>
+<script type="text/javascript" src="/js/components/modal.js"></script>
+<script type="text/javascript" src="/js/components/tableResult.js"></script>
+<script type="text/javascript" src="/js/components/table.js"></script>
+<link rel="stylesheet" href="/css/home.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/components.css" />
+</head>
+<body>
+	<div class="container-home">
+		<div class="home-header">@Drimansy</div>
+		<div class="home-body">
+			<input type="hidden" th:value="${userId}" id="userId" />
+			<div class="home-menu">
+				<div class="flex-center menu-header">
+					<span>Menú</span>
+				</div>
+				<div class="menu-sections">
+					<div class="menu-section">
+						<span>Diario</span>
+						<div class="menu-items">
+							<div class="menu-item">
+								<span id="itemDailyOut">Salidas</span>
+							</div>
+							<div class="menu-item">
+								<span id="invoices">Facturas</span>
+							</div>
+						</div>
+					</div>
+					<div class="menu-section">
+						<span>Configuración</span>
+						<div class="menu-items">
+							<div class="menu-item">
+								<span id="itemProduct">Productos</span>
+							</div>
+						</div>
+					</div>			
+				</div>
+			</div>
+			<div class="home-workspace">
+				<div id="workspaceTitle" class="workspace-title">
+					<span>Título</span>
+				</div>
+				<div id="workspaceContainer" class="workspace-container"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

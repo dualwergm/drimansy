@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>@Drimansy - Salidas</title>
+<script type="text/javascript" src="/js/daily.js"></script>
+</head>
+<body>
+	<div class="main-container">
+		<div class="container-btn-bottom">
+			<div id="newConcept" class="btns btn1">
+				<span>Nueva salida</span>
+			</div>
+		</div>
+		<div th:if="${dailys.isEmpty()}" class="container-empty">
+			<div>
+				<span class="icon-sad empty-rows"></span>
+			</div>
+			<div>
+				<span class="tx-big-warning">No se encontraron registros</span>
+			</div>
+		</div>
+		<div th:if="${!dailys.isEmpty()}" class="searcher-result">
+			<div class="result-table">
+				<div class="header-row">
+					<div class="header-column" style="width: 15%">
+						<span>Fecha</span>
+					</div>
+					<div class="header-column" style="width: 15%">
+						<span>Carro</span>
+					</div>
+					<div class="header-column" style="width: 30%">
+						<span>Responsable</span>
+					</div>
+					<div class="header-column" style="width: 15%">
+						<span>Total salida</span>
+					</div>
+					<div class="header-column" style="width: 15%">
+						<span>Total llegada</span>
+					</div>
+					<div class="header-column" style="width: 10%">
+						<span>&nbsp;</span>
+					</div>
+				</div>
+				<div th:if="${!dailys.isEmpty()}" class="container-rows">
+					<div th:each="daily : ${dailys}" th:id="${daily.id}"
+						class="body-row daily-item">
+						<div class="body-column" style="width: 15%">
+							<a href="#" class="go-to" title="Ir a editar">
+								<span th:text="${daily.dateStr}"></span>
+							</a>
+						</div>
+						<div class="body-column" style="width: 15%">
+							<span th:text="${daily.car.plate}"></span>
+						</div>
+						<div class="body-column" style="width: 30%">
+							<span th:text="${daily.responsible.name}"></span>
+						</div>
+						<div class="body-column" style="width: 15%">
+							<span th:text="${daily.totalOut}"></span>
+						</div>
+						<div class="body-column" style="width: 15%">
+							<span th:text="${daily.arriveTotal}"></span>
+						</div>
+						<div class="body-column" style="width: 10%; justify-content: center;">
+							<span class="icon-assignment_return icon-row-action" 
+								style="transform: rotateY(180deg);" title="Registrar llegada"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
