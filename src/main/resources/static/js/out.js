@@ -58,7 +58,7 @@ var saveOutIn = () => {
         dataType: 'json',
         timeout: 600000,
         success: function (data) {
-            console.log(data);
+        	new AjaxResponse(data).process();
         },
         error: function (e) {
         	console.log(e);

@@ -22,17 +22,32 @@ var calculateInvoiceValuesGroup = () => {
 		const price = $row.find(".inv-price").val();
 		total += (o.value * price);
 	});
-	$("#totalOutSpan").text(total);
+	let totalPayment = $("#totalPayment").val();
+	$("#totalSpan").text(total);
 	$("#total").val(total);
+	$("#toPaySpan").text(total - totalPayment);
 };
 
 var toDeleteInvoice = function() {
 	const $row = $(this.closest(".body-row"));
 	if(!$($row).attr("id")){
 		$row.remove();
-	}else{
-		console.log("eliminar en base");
+		return;
 	}
+	if(!confirm("Seguro quieres eliminar este producto de la factura?")){
+		return;
+	}
+	const id = $row.attr("id");
+	$.post(`/invoice/detail/delete?detailId=${id}`,
+			null,
+			function(jData){
+				jData.afterOf = function(){
+					$row.remove();
+					refreshTotalPayments();
+				};
+				ajaxResponse(jData);
+			}
+	);
 };
 
 var setInvoiceTableHandler = () => {
@@ -95,8 +110,9 @@ function loquesea(){
 }
 
 var getPayments = () => {
+	const id = $("#id").val();
 	var paymentModal = new Modal({title: "Abonos", 
-		ifUrl: '/payment/list?isModal=1',
+		ifUrl: `/payment/list?invoiceId=${id}&isModal=1`,
 		ifId: 'paymentsModal',
 		ifAfterLoad: "loquesea"
 	}) 
@@ -133,6 +149,18 @@ var validateInvoiceSave = () => {
 	return true;
 };
 
+function refreshTotalPayments(){
+	const id = $("#id").val();
+	$.get(`/payment/total?invoiceId=${id}`,
+			null,
+			function(data){
+				const jData = JSON.parse(data.jresponse);
+				$("#totalPayment").val(jData.totalPayments);
+				calculateInvoiceValuesGroup();
+			}
+	);
+}  
+
 var saveInvoice = () => {
 	if(!validateInvoiceSave()){
 		return;
@@ -149,7 +177,7 @@ var saveInvoice = () => {
         dataType: 'json',
         timeout: 600000,
         success: function (data) {
-            console.log(data);
+            new AjaxResponse(data).process();
         },
         error: function (e) {
         	console.log(e);

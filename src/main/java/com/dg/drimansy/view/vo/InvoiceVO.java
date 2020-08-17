@@ -49,4 +49,8 @@ private Long id;
 	public Long getDailyId() {
 		return getDailyOut() == null ? 0l : getDailyOut().getId();
 	}
+	
+	public double getToPay() {
+		return getTotal() - getPaymentTotal();
+	}
 }

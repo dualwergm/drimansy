@@ -40,7 +40,7 @@ public class InvoicePayment {
 	private Collaborator received;
 	
 	@ManyToOne
-	@JoinColumn(name = "invoice_idt")
+	@JoinColumn(name = "invoice_ipm")
 	private Invoice invoice;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -56,9 +56,12 @@ public class InvoicePayment {
 		setId(lId > 0 ? Long.valueOf(lId) : null);
 		setValue(json.get("value").asDouble(0));
 		setDate(DateUtils.getDateFromWeb(json.get("iDate").asText()));
-		setReceived(new Collaborator(json.get("responsibleId").asLong()));
-		setInvoice(new Invoice(json.get("responsibleId").asLong()));
-		long cBy = json.get("createdBy").asLong();
+		setReceived(new Collaborator(json.get("receivedby").asLong()));
+		setInvoice(new Invoice(json.get("invoiceId").asLong()));
+		long cBy = 0;
+		if(json.has("createdBy")) {
+			cBy = json.get("createdBy").asLong(0);
+		}
 		long uId = json.get("userId").asLong();
 		setCreatedBy(new User(cBy>0?cBy:uId));
 		setCreationdate(new Date());

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>@Drimansy - Abonos</title>
 <script th:if="${isModal>0}" type="text/javascript" src="/js/jquery/jquery.3.4.1.min.js"></script>
-<script th:if="${isModal>0}" type="text/javascript" src="/js/utils.js"></script>
+<script th:if="${isModal>0}" type="text/javascript" src="/js/utils/utils.js"></script>
 
 <script type="text/javascript" src="/js/payments.js"></script>
 
@@ -15,11 +15,15 @@
 <body>
 	<div class="main-container">
 		<div class="container-btn-bottom">
-			<div id="newConcept" class="btns btn1">
+			<div id="newPayment" class="btns btn2">
 				<span>Nuevo abono</span>
+			</div>
+			<div id="savePayments" class="btns btn1">
+				<span>Guardar abonos</span>
 			</div>
 		</div>
 		<div class="searcher-result">
+			<input id="invoiceId" type="hidden" th:value="${invoiceId}" />
 			<div class="result-table">
 				<div class="header-row">
 					<div class="header-column" style="width: 25%">
@@ -29,14 +33,14 @@
 						<span>Valor</span>
 					</div>
 					<div class="header-column" style="width: 40%">
-						<span>Responsable</span>
+						<span>Recibido por</span>
 					</div>
 					<div class="header-column" style="width: 10%">
 						<span>&nbsp;</span>
 					</div>
 				</div>
 				<div class="container-rows">
-					<div th:if="${!payments.isEmpty()}" th:each="payment : ${payments}" th:id="${payments.id}"
+					<div th:if="${!payments.isEmpty()}" th:each="payment : ${payments}" th:id="${payment.id}"
 						class="body-row payment-item">
 						<div class="body-column" style="width: 25%">
 							<span th:text="${payment.dateStr}"></span>
@@ -48,7 +52,7 @@
 							<span th:text="${payment.received.name}"></span>
 						</div>
 						<div class="body-column" style="width: 10%; justify-content: center;">
-							<span class="icon-assignment_return icon-row-action" 
+							<span class="icon-delete icon-row-action" 
 								title="Eliminar abono"></span>
 						</div>
 					</div>
@@ -60,28 +64,28 @@
 				<span class="icon-sad empty-rows"></span>
 			</div>
 			<div th:if="${isModal>0}">
-				<span class="tx-big-warning">No hay abonos.</span>
+				<span class="tx-big">No hay abonos.</span>
 			</div>
 		</div>
 	</div>
 	<template id="paymentRowTemplate">
-		<div class="body-row payment-item">
+		<div class="body-row payment-item edit-item">
 			<div class="body-column" style="width: 25%">
 				<input id="iDate" type="date" required="required" />
 			</div>
 			<div class="body-column" style="width: 25%">
-				<input type="number" id="value" class="pay-value" min="0" required="required" />
+				$<input type="number" id="value" class="pay-value" min="0" required="required" />
 			</div>
 			<div class="body-column" style="width: 40%">
 				<select
-						required="required" id="recived">
+						required="required" id="receivedby">
 						<option value="">--</option>
 						<option th:each="coll : ${collaborators}" th:value="${coll.id}"
 							th:utext="${coll.name}" />
 					</select>
 			</div>
 			<div class="body-column" style="width: 10%; justify-content: center;">
-				<span class="icon-assignment_return icon-row-action" 
+				<span class="icon-delete icon-row-action" 
 					title="Eliminar abono"></span>
 			</div>
 		</div>

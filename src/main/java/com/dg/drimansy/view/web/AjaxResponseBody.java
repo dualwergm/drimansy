@@ -17,4 +17,7 @@ public class AjaxResponseBody {
 
 	@JsonView
 	List<ProductVO> list;
+	
+	@JsonView
+	String jresponse;
 }

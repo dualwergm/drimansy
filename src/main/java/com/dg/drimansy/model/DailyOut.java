@@ -85,9 +85,8 @@ public class DailyOut {
 		setCar(new Car(json.get("carId").asLong()));
 		setDate(DateUtils.getDateFromWeb(json.get("dailyDate").asText()));
 		setDateOut(DateUtils.getDateTimeFromWeb(json.get("dateOut").asText()));
-		String arriveDateStr = json.get("arriveDate").asText();
-		if(!arriveDateStr.isEmpty()) {
-			setArriveDate(DateUtils.getDateTimeFromWeb(arriveDateStr));
+		if(json.has("arriveDate") && !json.get("arriveDate").asText().isEmpty()) {
+			setArriveDate(DateUtils.getDateTimeFromWeb(json.get("arriveDate").asText()));
 		}
 		setResponsible(new Collaborator(json.get("responsibleId").asLong()));
 		setArriveTotal(json.get("arriveTotal").asDouble());

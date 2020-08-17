@@ -36,15 +36,15 @@ public class InvoicePaymentService {
 		return list;
 	}
 
-	public InvoicePayment getPaymentFromWeb(JsonNode root) throws ParseException {
-		JsonNode jMaster = (JsonNode)root.get("jMaster");
-		InvoicePayment payment = new InvoicePayment();
-		payment.toEntity(jMaster);
-		return payment;
-	}
-	
-	public void save(InvoicePayment payment) {
-		this.paymentRepository.saveAndFlush(payment);
+	public List<InvoicePayment> getPaymentsFromWeb(JsonNode root) throws ParseException {
+		JsonNode jPayments = (JsonNode)root.get("jPayments");
+		List<InvoicePayment> payments = new ArrayList<>();
+		for(JsonNode jPayment: jPayments) {
+			InvoicePayment payment = new InvoicePayment();
+			payment.toEntity(jPayment);
+			payments.add(payment);
+		}
+		return payments;
 	}
 	
 	@Transactional(readOnly = true)
@@ -69,4 +69,17 @@ public class InvoicePaymentService {
 		return paymentVO;
 	}
 	
+	public void savePayments(List<InvoicePayment> payments) {
+		for (InvoicePayment payment: payments) {
+			save(payment);
+		}
+	}
+	
+	public void save(InvoicePayment payment) {
+		this.paymentRepository.saveAndFlush(payment);
+	}
+	
+	public void deleteById(Long paymentId) {
+		this.paymentRepository.deleteById(paymentId);
+	}
 }

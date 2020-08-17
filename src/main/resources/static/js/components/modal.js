@@ -7,13 +7,16 @@ class Modal {
 	
 	getModalContainer({title, content}){
 		const $divBtns = this.jModal.btns ? `<div class="container-btns-modal">${this.getBtnsHtml()}</div>` : "";
+		const $divTitle = title ? `<div class="flex-center content-modal-title">${title}</div>` : "";
+		const style = this.jModal.transparent ? `style="background-color: transparent"` : "";
+		const center = this.jModal.transparent ? "flex-center" : "";
 		return `<div id="containerModal" class="container-modal">
-				  <div class="close-modal">X</div>
-				  <div class="content-modal">
-				    <div class="flex-center content-modal-title">${title}</div>
-				    <div class="content-modal-body">${content}</div>
-					${$divBtns}
-				  </div>
+					<div class="close-modal">X</div>
+				  	<div class="content-modal ${center}" ${style}>
+				  	${$divTitle}
+				   	<div class="content-modal-body">${content}</div>
+						${$divBtns}
+				  	</div>
 				</div>`;
 	};
 
@@ -35,7 +38,6 @@ class Modal {
 		$("body #containerModal").remove();
 	}
 
-	
 	getIdsAdded(){
 		const markAsAdded = $("body .content-modal-body .body-row .remove").map((i,o) => console.log($(o).closest(".body-row").attr("id"))).get();
 	}	
@@ -118,7 +120,7 @@ class Modal {
 
 	showModal(){
 		$("body").append(this.getModalContainer(this.jModal));
-		$("body").find("#containerModal").addClass("showModal");
+		$("body").find("#containerModal:not(.showModal)").addClass("showModal");
 		this.initialiceModal();
 	};
 	

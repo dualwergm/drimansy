@@ -17,10 +17,9 @@ const getAttrs = jAttrs => {
 }
 
 const getInputValues = ($selector) =>{
-	const masterIds = $selector.map((i,o) => o.id);
 	let jMaster = {};
-	masterIds.each((i,id) => {
-		jMaster[id] = $(`#${id}`).val();
+	$selector.each((_i,o) => {
+		jMaster[o.id] = $(o).val();
 	});
 	return jMaster;
 };
@@ -31,6 +30,17 @@ const getInputValuesMaster = () => {
 	return jMaster;
 };
 
+const getInputValuesRow = ($row) => {
+	return getInputValues($row.find("input,select"));
+};
+
+const setBError = ($o) => {
+	$o.addClass("b-error");
+	setTimeout(()=> {
+		$o.removeClass("b-error");
+	}, 5000);
+};
+
 const validateRequired = () => {
 	let valid = true;
 	$('input[required], select[required]').each((i,o)=>{
@@ -38,6 +48,20 @@ const validateRequired = () => {
 			valid = false;
 			let label = $(o).siblings("label").text();
 			alert(`El campo ${label} no puede quedar vacío.`);
+			setBError($(o));
+			return false;
+		}
+	});
+	return valid;
+};
+
+const validateRequiredDetails = (msg) => {
+	let valid = true;
+	$('input[required], select[required]').each((i,o)=>{
+		if(isEmpty($(o).val())){
+			valid = false;
+			alert(msg);
+			setBError($(o).closest(".body-row"));
 			return false;
 		}
 	});
@@ -66,3 +90,11 @@ const validateEmptyRows = () => {
 	$(".container-rows .body-row").length <= 0 ? 
 			$(".container-empty").show() : $(".container-empty").hide();
 };
+
+function hideLastModal(){
+	$("body #containerModal").last().remove();
+}
+
+function ajaxResponse(jData){
+	new AjaxResponse(jData).process();
+}

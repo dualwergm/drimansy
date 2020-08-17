@@ -38,6 +38,7 @@ public class InvoiceService {
 		for (Invoice invoice: invoices) {
 			InvoiceVO invoiceVO = new InvoiceVO();
 			invoiceVO.toVO(invoice);
+			invoiceVO.setPaymentTotal(paymentRepository.sumPayments(invoice.getId()));
 			list.add(invoiceVO);
 		}
 		return list;
